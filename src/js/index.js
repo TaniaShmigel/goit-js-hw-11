@@ -40,9 +40,7 @@ async function onSearch(e) {
     refs.button.classList.remove('hidden');
     createCard(response.data.hits);
   } catch (error) {
-    return Notify.info(
-      "We're sorry, but you've reached the end of search results."
-    );
+    return error;
   }
 
   console.log(response);
@@ -105,6 +103,13 @@ async function onBtnLoad() {
     }
     createCard(response.data.hits);
 
+    if (response.data.hits.length < 40) {
+      refs.button.classList.add('hidden');
+      return Notify.info(
+        "We're sorry, but you've reached the end of search results."
+      );
+    }
+
     const { height: cardHeight } =
       gallery.firstElementChild.getBoundingClientRect();
 
@@ -113,8 +118,6 @@ async function onBtnLoad() {
       behavior: 'smooth',
     });
   } catch (error) {
-    return Notify.info(
-      "We're sorry, but you've reached the end of search results."
-    );
+    return error;
   }
 }
